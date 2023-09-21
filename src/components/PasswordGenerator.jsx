@@ -99,9 +99,13 @@ const PasswordGenerator = () => {
   };
 
   return (
-    <div className="min-h-screen flex items-center justify-center ">
-        <div className="max-w-md mx-auto p-4 border rounded-md shadow-2xl w-full">
-      <form onSubmit={handleSubmit} className="max-w-md mx-auto p-4 border rounded-md shadow-2xl w-full">
+    <div className="min-h-screen flex items-center justify-center " style={{
+        backgroundImage: `url('https://images.wallpaperscraft.com/image/single/pier_sea_silence_947727_1366x768.jpg')`,
+        backgroundSize: 'cover',
+        backgroundPosition: 'center',
+      }}>
+        <div className="max-w-md mx-auto p-4 border rounded-md shadow-2xl w-full bg-white opacity-90">
+      <form onSubmit={handleSubmit} className="max-w-md mx-auto p-4 border rounded-md shadow-2xl w-full  bg-white opacity-90">
           <h1 className="text-2xl font-bold mb-4 flex justify-center items-center h-16">Password Generator</h1>
           <div className="mb-4">
             <label className="block text-sm font-medium">Password Length:</label>
