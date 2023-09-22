@@ -95,6 +95,7 @@ const PasswordGenerator = () => {
     if (shouldClear) {
       setSavedPasswords([]); // Clear the saved passwords state
       setPassword('');
+      setError('');
       setIsModalOpen(false);
     }
   };
