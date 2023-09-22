@@ -21,30 +21,121 @@ const PasswordGenerator = () => {
   const [savedPasswords, setSavedPasswords] = useState([]);
   const [isModalOpen, setIsModalOpen] = useState(false);
 
+  // const generatePassword = () => {
+  //   if (complexity.length === 0) {
+  //     // No checkboxes are selected
+  //     toast.info('Please select at least one constraint');
+  //     return;
+  //   }
+  
+  //   axios
+  //     .get(`http://127.0.0.1:8000/api/generate-password/`, {
+  //       params: {
+  //         length: length,
+  //         complexity: complexity.join(","),
+  //       },
+  //     })
+  //     .then((response) => {
+  //       setPassword(response.data.password);
+  //       setError(''); // Clear any previous error
+  //     })
+  //     .catch((error) => {
+  //       console.error(error);
+  //       setPassword('Password length must be at least 6 characters');
+  //       toast.error('Password generation error: Must contain at least 6 characters');
+  //       setError('Password generation error: Must contain at least 6 characters' || 'Unknown error');
+  //     });
+  // };
+
+  // const handleComplexityChange = (value) => {
+  //   if (complexity.includes(value)) {
+  //     setComplexity(complexity.filter((item) => item !== value));
+  //   } else {
+  //     setComplexity([...complexity, value]);
+  //   }
+  // };
+
+  // const handleSubmit = (e) => {
+  //   e.preventDefault();
+  //   setIsCopied(false); // Prevent the default form submission behavior
+  //   generatePassword(); // Call the generatePassword function when the form is submitted
+  // };
+
+  // const copyToClipboard = () => {
+  //   const passwordInput = document.createElement('input');
+  //   passwordInput.value = password;
+  //   document.body.appendChild(passwordInput);
+  //   passwordInput.select();
+  //   document.execCommand('copy');
+  //   document.body.removeChild(passwordInput);
+  //   setIsCopied(true);
+  //   toast.success("Copied to clipboard")
+  // };
+
+  // const savePassword = () => {
+  //   if (password) {
+  //     // Check if the password is already in the savedPasswords array
+  //     if (!savedPasswords.includes(password)) {
+  //       // If it's not a duplicate, add it to the savedPasswords state
+  //       setSavedPasswords([...savedPasswords, password]);
+  //       toast.success("Password saved")
+  //     } else {
+  //       // Handle duplicate password error here (e.g., show a message)
+  //       setError('Password already saved');
+  //       toast.error("Password already saved")
+  //     }
+  //   } else {
+  //     // Handle the case where there's no password to save (e.g., show a message)
+  //     setError('No password to save');
+  //   }
+  // };
+  
+  // const clearPasswords = () => {
+  //   const shouldClear = window.confirm("Are you sure you want to clear all saved passwords?");
+  //   if (shouldClear) {
+  //     setSavedPasswords([]); // Clear the saved passwords state
+  //     setPassword('');
+  //     setError('');
+  //     setIsModalOpen(false);
+  //   }
+  // };
+
+  
   const generatePassword = () => {
     if (complexity.length === 0) {
       // No checkboxes are selected
       toast.info('Please select at least one constraint');
       return;
     }
-  
-    axios
-      .get(`http://127.0.0.1:8000/api/generate-password/`, {
-        params: {
-          length: length,
-          complexity: complexity.join(","),
-        },
-      })
-      .then((response) => {
-        setPassword(response.data.password);
-        setError(''); // Clear any previous error
-      })
-      .catch((error) => {
-        console.error(error);
-        setPassword('Password length must be at least 6 characters');
-        toast.error('Password generation error: Must contain at least 6 characters');
-        setError('Password generation error: Must contain at least 6 characters' || 'Unknown error');
-      });
+
+    if (length < 6) {
+      // Password length is less than 6 characters
+      setError('Password length must be at least 6 characters');
+      toast.error('Password length must be at least 6 characters');
+      return;
+    }
+
+    const charset = {
+      uppercase: 'ABCDEFGHIJKLMNOPQRSTUVWXYZ',
+      lowercase: 'abcdefghijklmnopqrstuvwxyz',
+      numbers: '0123456789',
+      special: '!@#$%^&*()_+[]{}|;:,.<>?',
+    };
+
+    let newPassword = '';
+    let totalCharset = '';
+
+    complexity.forEach((type) => {
+      totalCharset += charset[type];
+    });
+
+    for (let i = 0; i < length; i++) {
+      const randomIndex = Math.floor(Math.random() * totalCharset.length);
+      newPassword += totalCharset[randomIndex];
+    }
+
+    setPassword(newPassword);
+    setError(''); // Clear any previous error
   };
 
   const handleComplexityChange = (value) => {
@@ -89,7 +180,7 @@ const PasswordGenerator = () => {
       setError('No password to save');
     }
   };
-  
+
   const clearPasswords = () => {
     const shouldClear = window.confirm("Are you sure you want to clear all saved passwords?");
     if (shouldClear) {
