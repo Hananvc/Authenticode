@@ -94,6 +94,7 @@ const PasswordGenerator = () => {
     const shouldClear = window.confirm("Are you sure you want to clear all saved passwords?");
     if (shouldClear) {
       setSavedPasswords([]); // Clear the saved passwords state
+      setPassword('');
       setIsModalOpen(false);
     }
   };
